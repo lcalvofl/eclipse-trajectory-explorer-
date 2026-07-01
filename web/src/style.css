@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&family=Jura:wght@700&display=swap');
+
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #1a1814;
+  background: #f5f0e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: auto;
+  background: #f5f0e8;
+}
+
+/* ── LAYOUT ── */
+.page {
+  min-height: 100vh;
+  /* FIX 3: menos padding vertical, el título ocupaba demasiado espacio */
+  padding: 16px 36px 20px;
+  background: #f5f0e8;
+}
+
+.github-link {
+  position: absolute;
+  top: 16px;
+  right: 36px;
+  z-index: 3;
+  padding: 8px 13px;
+  border: 1px solid rgba(26,24,20,0.18);
+  border-radius: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: #1a1814;
+  text-decoration: none;
+  background: rgba(245,240,232,0.72);
+  backdrop-filter: blur(10px);
+}
+
+/* ── HERO ── */
+.hero {
+  /* FIX 3: hero compacto, no ocupa más de lo necesario */
+  max-width: 980px;
+  margin-bottom: 14px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 14px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(7, 7, 7, 0.4);
+}
+
+h1 {
+  margin: 0;
+  max-width: 780px;
+  font-family: "Jura", sans-serif;
+  /* FIX 3: título más contenido — era demasiado protagonista */
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #1a1814;
+}
+
+.subtitle {
+  max-width: 780px;
+  /* FIX 3: márgenes reducidos, texto más compacto */
+  margin: 8px 0 12px;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(26,24,20,0.5);
+}
+
+/* ── ALERT ── */
+.alert {
+  display: flex;
+  gap: 14px;
+  max-width: 870px;
+  margin-bottom: 12px;
+  padding: 11px 18px;
+  border: 1px solid rgba(186,117,23,0.25);
+  border-left: 3px solid #633806;
+  border-radius: 10px;
+  background: rgba(186,117,23,0.06);
+}
+
+.alert-icon {
+  font-size: 18px;
+  line-height: 1;
+  color: #633806;
+}
+
+.alert-title {
+  margin: 0 0 8px;
+  font-family: "Jura", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #633806;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border: 1px solid rgba(186,117,23,0.25);
+  border-radius: 7px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: #633806;
+}
+
+.pill i {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+/* ── MAP ── */
+.viz-layout {
+  position: relative;
+}
+
+.map-card {
+  position: relative;
+  /* FIX 1: overflow visible para que el tooltip no se recorte */
+  overflow: visible;
+  border: 1px solid rgba(26,24,20,0.12);
+  border-radius: 16px;
+  background: #ede8dc;
+  box-shadow: 0 18px 60px rgba(26,24,20,0.08);
+}
+
+/* Clip solo el SVG del mapa, no el tooltip */
+.map-card > svg {
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+}
+
+#map {
+  width: 100%;
+  min-width: 1320px;
+  /* Mapa más largo y alto para que no parezca recortado dentro del canvas */
+ height: clamp(560px, 70vh, 760px);
+  display: block;
+  shape-rendering: geometricPrecision;
+}
+
+.source a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+
+.source a:hover {
+  opacity: .65;
+  text-decoration: underline;
+}
+
+.countries {
+  pointer-events: none;
+}
+
+.historical,
+.highlighted {
+  mix-blend-mode: multiply;
+}
+
+.historical-point {
+  mix-blend-mode: multiply;
+  transition: r 140ms ease, opacity 140ms ease;
+  pointer-events: none;
+}
+
+.historical-point-hit {
+  pointer-events: all;
+}
+
+/* ── PUNTOS DESTACADOS ── */
+.highlight-point {
+  /* FIX 2: transición más notoria */
+  transition: r 160ms ease, stroke-width 160ms ease, filter 160ms ease;
+  cursor: pointer;
+}
+
+.highlight-point:hover {
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* ── LABELS MAPA ── */
+.map-label {
+  font-family: "IBM Plex Mono", monospace;
+  /* labels más grandes y legibles */
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  paint-order: stroke;
+  stroke: #ede8dc;
+  stroke-width: 5px;
+  pointer-events: none;
+}
+
+/* ── TOOLTIP ── */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  width: 292px;
+  padding: 20px 22px;
+  border: 1px solid rgba(26,24,20,0.18);
+  border-radius: 14px;
+  background: rgba(245,240,232,0.96);
+  color: #1a1814;
+  box-shadow: 0 24px 60px rgba(26,24,20,0.18);
+  backdrop-filter: blur(12px);
+  transition: opacity 140ms ease;
+  /* FIX tooltip recorte: z-index alto */
+  z-index: 10;
+}
+
+.tooltip strong {
+  display: block;
+  margin-bottom: 14px;
+  font-family: "Jura", sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(26,24,20,0.07);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.tooltip-row:last-of-type {
+  border-bottom: none;
+}
+
+.tooltip-row span {
+  color: rgba(26,24,20,0.38);
+}
+
+.tooltip-row b {
+  font-weight: 500;
+  text-align: right;
+}
+
+.tooltip em {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 7px 10px;
+  border: 1px solid rgba(26,24,20,0.18);
+  border-radius: 6px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  font-style: normal;
+  text-transform: uppercase;
+  color: #633806;
+}
+
+/* ── HINT / SOURCE ── */
+.hint,
+.source {
+  position: absolute;
+  bottom: 14px;
+  padding: 7px 10px;
+  border: 1px solid rgba(26,24,20,0.12);
+  border-radius: 7px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(245,240,232,0.68);
+  backdrop-filter: blur(8px);
+  /* para que no queden por encima del tooltip */
+  z-index: 1;
+}
+
+.hint { left: 16px; }
+
+.source {
+  right: 16px;
+  color: rgba(5, 5, 5,1);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-height: 760px) {
+  .page { padding-top: 14px; padding-bottom: 14px; }
+  .eyebrow { margin-bottom: 6px; }
+  h1 { font-size: clamp(20px, 2.2vw, 30px); }
+  .subtitle { margin: 6px 0 10px; font-size: 12.5px; }
+  .alert { margin-bottom: 10px; padding: 10px 16px; }
+  #map { height: clamp(500px, 64vh, 680px); }
+}
+
+@media (max-width: 900px) {
+  .page { padding: 16px 18px 20px; }
+
+  .github-link {
+    position: static;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .subtitle { max-width: 100%; }
+  .alert { max-width: 100%; }
+  .hint { display: none; }
+
+  .source {
+    left: 16px;
+    right: auto;
+  }
+}
