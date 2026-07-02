@@ -102,7 +102,7 @@ const mapCard = document.querySelector('.map-card')
 
 Promise.all([
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
-  d3.json('/data/eclipse_paths.geojson')
+  d3.json(`${import.meta.env.BASE_URL}data/eclipse_paths.geojson`)
 ]).then(([world, eclipses]) => {
   const countries = feature(world, world.objects.countries)
 
